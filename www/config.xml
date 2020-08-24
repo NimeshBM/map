@@ -37,6 +37,11 @@
         <allow-intent href="itms-apps:*" />
         <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     </platform>
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
     <engine name="android" spec="^7.1.4" />
+    <config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string> need location access to find things nearby </string> 
+
+</edit-config>
 </widget>
