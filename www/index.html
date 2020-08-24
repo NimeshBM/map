@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="js/jquery.mobile-1.4.5.css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.5.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="cordova.js" ></script>
+
+
+
+ <!-- Load Leaflet from CDN -->
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+ integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+ crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+ integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+ crossorigin=""></script>
+
+<!-- Load Esri Leaflet from CDN -->
+<script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
+ integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
+ crossorigin=""></script>
+
+<!-- Load Esri Leaflet Geocoder from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.css"
+ integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
+ crossorigin="">
+<script src="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.js"
+ integrity="sha512-HrFUyCEtIpxZloTgEKKMq4RFYhxjJkCiF5sDxuAokklOeZ68U2NPfh4MFtyIVWlsKtVbK5GD2/JzFyAfvT5ejA=="
+ crossorigin=""></script>
+
+ <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24"></script>
+ <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24"></script>
+
+
+		<style scoped>
+   
+			.blackText {color:black;}
+		</style>
+</head>
+<body>
+	<!-- Homepage -->
+	<div data-role="page" id="home" data-theme="b">
+		<div data-role="header">
+			<h1>My Map</h1>
+		</div>
+
+		<div class="nav">
+			<div data-role="navbar">
+				<ul>
+					<li>
+						<a href="#" class="ui-btn ui-icon-home ui-btn-icon-top">My Location</a>
+					</li>
+					<li>
+						<a href="#searchloc" class="ui-btn ui-icon-location ui-btn-icon-top">Search Location</a><br>
+					</li>
+					<li>
+						<a href="#around" class="ui-btn ui-icon-info ui-btn-icon-top">What's around</a><br>
+					</li>
+			</div>
+        </div>
+		<div id="text">
+			<p>This is where you are situated.</p>
+        </div>
+        <div id="mapid" style="width: 400px; height: 500px;"></div>
+        <script type="text/javascript">
+          if (navigator.geolocation == undefined) {
+            alert("Geolocation undefined");
+          } else {
+            //alert("Geolocation Available");
+      
+            //code 1: call to getCurrentPosition function
+            navigator.geolocation.getCurrentPosition(userLocated, locationError);
+            //code 2: define function userLocated
+            function userLocated(position) {
+              var latitude = position.coords.latitude;
+              var longitude = position.coords.longitude;
+            //alert("Lat:" + latitude + ", Long:" + longitude);
+      
+              var mymap = L.map('mapid').setView([latitude, longitude], 15);
+              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                maxZoom: 19,
+                attribution: 'Map data &copy;' +
+                  '<a href="https://www.openstreetmap.org/">OpenStreetMap</a>' +
+                  'contributors,<a href="https://creativecommons.org/licenses' +
+                  '/by-sa/2.0/">CC-BY-SA</a>,Imagery © <a href="https://' +
+                  'www.mapbox.com/">Mapbox</a>',
+                id: 'mapbox.streets-satellite',
+                accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYyc' +
+                  'XBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+              }).addTo(mymap);
+              var marker = L.marker([latitude, longitude]).addTo(mymap);
+              marker.bindPopup("You are here!").openPopup(); 
+            }
+
+            function locationError(error) {
+                switch(error.code) {
+                      case error.PERMISSION_DENIED:
+                      alert("Permission Denied");
+                      // error handling
+                      break;
+                      case error.POSITION_UNAVAILABLE:
+                      alert("Position Unavaible");
+                      // error handling
+                      break;
+                      case error.TIMEOUT:
+                      alert("Connection Timeout");
+                     // error handling
+                     break;
+                        }
+                      }
+                    }
+      
+        </script>
+		</br>
+		<div data-role="footer">
+			<h1>© 2020 Mithil Bhootooa All Rights Reserved</h1>
+		</div>
+	</div>
+
+	<div data-role="page" id="searchloc" data-theme="b">
+		<div data-role="header">
+			<h1>My Map</h1>
+		</div>
+		<div class="nav">
+			<div data-role="navbar">
+				<ul>
+					<li>
+						<a href="#home" class="ui-btn ui-icon-home ui-btn-icon-top">My Location</a>
+					</li>
+					<li>
+						<a href="#" class="ui-btn ui-icon-location ui-btn-icon-top">Search Location</a><br>
+					</li>
+					<li>
+						<a href="#around" class="ui-btn ui-icon-info ui-btn-icon-top">What's around</a><br>
+					</li>
+			</div>
+		</div>
+        <div id="map" style="width: 400px; height: 500px;"></div>
+        <script type="text/javascript">
+ var map = L.map('map').setView([-20.3484, 57.5522], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+
+L.esri.Geocoding.geosearch({
+  providers: [
+    arcgisOnline,
+    L.esri.Geocoding.mapServiceProvider({
+      label: 'States and Counties',
+      url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
+      layers: [2, 3],
+      searchFields: ['NAME', 'STATE_NAME']
+    })
+  ]
+}).addTo(map);
+      
+        </script>
+
+				</br>
+				<div data-role="footer">
+					<h1>© 2020 Mithil Bhootooa All Rights Reserved</h1>
+				</div>
+			</div>
+
+            <div data-role="page" id="around" data-theme="b">
+                <div data-role="header">
+                    <h1>My Map</h1>
+                </div>
+                <div class="nav">
+                    <div data-role="navbar">
+                        <ul>
+                            <li>
+                                <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-top">My Location</a>
+                            </li>
+                            <li>
+                                <a href="#searchloc" class="ui-btn ui-icon-location ui-btn-icon-top">Search Location</a><br>
+                            </li>
+                            <li>
+                                <a href="#" class="ui-btn ui-icon-info ui-btn-icon-top">What's around</a><br>
+                            </li>
+                    </div>
+                </div>
+                <div id="map3" style="width: 400px; height: 500px;"></div>
+                <script type="text/javascript">
+                  window.onload = function() {
+          
+                      var popup = L.popup(),
+                          geocode,
+                          map;
+          
+                      map = L.map('map3', {
+                              layers: MQ.tileLayer(),
+                              center: [ -20.3484, 57.5522 ],
+                              zoom: 9 })
+                          .on('click', function(e) {
+                              popup.setLatLng(e.latlng)
+                                  .openOn(this);
+          
+                              geocode.reverse(e.latlng);
+                          });
+              //             L.control.layers({
+              //   'Map': mapLayer,
+              //   'Hybrid': MQ.hybridLayer(),
+              //   'Satellite': MQ.satelliteLayer(),
+              //   'Dark': MQ.darkLayer(),
+              //   'Light': MQ.lightLayer()
+              // }).addTo(map);
+        
+          
+                      geocode = MQ.geocode().on('success', function(e) {
+                          popup.setContent(geocode.describeLocation(e.result.best));
+                      });
+                  }
+              </script>
+                        </br>
+                        <div data-role="footer">
+                            <h1>© 2020 Mithil Bhootooa All Rights Reserved</h1>
+                        </div>
+                    </div>	
+
+</body>
+
+</html>
