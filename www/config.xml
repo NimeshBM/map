@@ -2,7 +2,7 @@
 <widget id="com.www.map" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>My Map</name>
     <description>
-        Storage
+        Geolocation Example
     </description>
     <author email="nmithil99@gmail.com">
         Mithil BHOOTOOA
